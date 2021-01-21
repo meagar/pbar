@@ -1,3 +1,4 @@
+// Package pbar provides a simple progress bar that includes display of records-per-second (RPS) and an ETA
 package pbar
 
 import (
@@ -59,9 +60,10 @@ func (p *Bar) Tick(progress int64) {
 	elapsed := time.Since(p.lastTime)
 	records := float64(progress - p.progress)
 
-	rps := records / elapsed.Seconds()
+	// operations per second
+	ops := records / elapsed.Seconds()
 
-	p.samples[p.sampleIndex] = rps
+	p.samples[p.sampleIndex] = ops
 	p.sampleIndex++
 	if p.sampleIndex >= sampleSize {
 		p.sampleIndex = 0
@@ -79,13 +81,13 @@ func (p *Bar) Progress() string {
 	buf.WriteString("\033[2K")                        // Clear to start of line
 	buf.WriteString(fmt.Sprintf("\033[%dD", p.width)) // Move cursor to start of line
 
-	rps := p.avg()
+	ops := p.avg()
 	// How many records were processed this tick
 	percent := float64(p.progress) / float64(p.total)
-	remainingSeconds := float64(p.total-(p.progress)) / rps
+	remainingSeconds := float64(p.total-(p.progress)) / ops
 	eta := time.Until(time.Now().Add(time.Second * time.Duration(remainingSeconds)))
-	fmt.Fprintf(&buf, "%d of %d (%d%%) - RPS: %.2f - ETA: %s",
-		p.progress, p.total, int(percent*100), rps, eta.Round(time.Second))
+	fmt.Fprintf(&buf, "%d of %d (%d%%) - OPS: %.2f - ETA: %s",
+		p.progress, p.total, int(percent*100), ops, eta.Round(time.Second))
 
 	p.renderBar(&buf, percent)
 	return buf.String()
