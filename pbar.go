@@ -11,7 +11,7 @@ import (
 )
 
 // How many samples we've collected
-const sampleSize = 10
+const sampleSize = 25
 
 // Bar maintains the progressbar's state
 type Bar struct {
