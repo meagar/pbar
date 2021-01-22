@@ -147,17 +147,13 @@ func (p *Bar) renderBar(buf *strings.Builder, percent float32) {
 
 // avg returns the average over the last N samples
 func (p *Bar) avg() float32 {
-	var sum, total float32
+	var sum float32
 
 	for _, n := range p.samples {
-		if n == 0.0 {
-			break
-		}
-		total++
 		sum += n
 	}
 
-	return sum / total
+	return sum / sampleSize
 }
 
 // Attempt to get the width of the terminal. Probably very non-portable, so if anything errors out we return 79

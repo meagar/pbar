@@ -1,10 +1,29 @@
 package pbar_test
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/meagar/pbar"
 )
+
+func TestPbar(t *testing.T) {
+	bar := pbar.New(pbar.Options{
+		Total: 10000,
+		Width: 100,
+	})
+
+	for i := uint64(0); i < 10000; i++ {
+		if i%100 == 0 {
+			bar.Tick(i)
+		}
+
+		time.Sleep(time.Duration(0.01 * float64(time.Second)))
+		fmt.Print(bar.Progress())
+	}
+
+}
 
 func TestProgress(t *testing.T) {
 	bar := pbar.New(pbar.Options{
