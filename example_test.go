@@ -21,7 +21,7 @@ func ExampleBar_Progress() {
 	out := bar.Progress()[9:]
 
 	fmt.Println(out)
-	// Output: 180 of 360 (50%) - OPS: 36.00 - ETA: 5s [==============---------------]
+	// Output: 180 of 360 (50%) - OPS: 1.44 - ETA: 2m5s [==============--------------]
 }
 
 func ExampleBar_Summary() {
