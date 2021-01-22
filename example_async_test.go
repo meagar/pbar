@@ -8,7 +8,7 @@ import (
 )
 
 // ExampleAsync demonstrates how to use pbar an in asynchronous example
-func ExampleAsync() {
+func Example_async() {
 	bar := pbar.New(pbar.Options{
 		Total: 10,
 		Width: 80,
