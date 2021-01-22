@@ -4,6 +4,8 @@
 pbar is a simple progress bar for Go.
 It's centered around the idea that you are probably iterating over a set of operations, and displays:
 
++++<a href="https://pkg.go.dev/github.com/meagar/pbar"><img src="https://pkg.go.dev/badge/github.com/meagar/pbar.svg" alt="Go Reference"></a>+++
+
 [source]
 263094 of 8635491 (3%) - OPS: 2009.81 - ETA: 1h9m25s [=---------------------------------]
 
