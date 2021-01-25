@@ -21,6 +21,7 @@ type Bar struct {
 	lastTime  time.Time
 	progress  uint64
 	width     int
+	ticks     int
 
 	// Tracks the last N states so we can average the records-per-second and produce a slightly
 	// less jumpy number
@@ -82,12 +83,20 @@ func (p *Bar) Tick(progress uint64) {
 
 	p.samples[p.sampleIndex] = ops
 	p.sampleIndex++
-	if p.sampleIndex >= sampleSize {
+	if p.sampleIndex >= min(p.ticks, sampleSize) {
 		p.sampleIndex = 0
 	}
 
 	p.lastTime = time.Now()
 	p.progress = progress
+	p.ticks++
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 // TickDelta advances the internal state of the progress bar by the given amount.
@@ -149,11 +158,13 @@ func (p *Bar) renderBar(buf *strings.Builder, percent float32) {
 func (p *Bar) avg() float32 {
 	var sum float32
 
-	for _, n := range p.samples {
-		sum += n
+	total := min(p.ticks, sampleSize)
+
+	for i := 0; i < total; i++ {
+		sum += p.samples[i]
 	}
 
-	return sum / sampleSize
+	return sum / float32(total)
 }
 
 // Attempt to get the width of the terminal. Probably very non-portable, so if anything errors out we return 79
