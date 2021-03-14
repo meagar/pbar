@@ -1,4 +1,6 @@
 // Package pbar provides a simple progress bar that includes display of records-per-second (RPS) and an ETA
+//
+// This package is a toy and shouldn't be used in production. It will crash.
 package pbar
 
 import (
